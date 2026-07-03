@@ -1,0 +1,43 @@
+! Router Interno (R-Int) Configuration
+! Asignatura: Seguridad de Redes (TSI-203)
+! Estudiante: Alan Daniel Garcia Mendez (2025-1403)
+! Docente: Jonathan Esteban Rondon Corniel
+!
+
+enable
+configure terminal
+
+! Cambiar el nombre del dispositivo
+hostname R-Int
+
+! Deshabilitar la búsqueda DNS
+no ip domain-lookup
+
+! Configuración del Servidor DHCP para la LAN
+ip dhcp excluded-address 14.3.0.1 14.3.0.10
+ip dhcp pool LAN_POOL
+ network 14.3.0.0 255.255.255.0
+ default-router 14.3.0.1
+ dns-server 8.8.8.8 1.1.1.1
+exit
+
+! Configuración de la interfaz hacia el Firewall FortiGate (FG-Int)
+interface Ethernet0/0
+ description Enlace hacia Firewall FortiGate (FG-Int)
+ ip address 10.0.0.2 255.255.255.252
+ no shutdown
+exit
+
+! Configuración de la interfaz hacia la LAN (conectada a SW-Int)
+interface Ethernet0/1
+ description Enlace hacia la LAN (SW-Int)
+ ip address 14.3.0.1 255.255.255.0
+ no shutdown
+exit
+
+! Configuración de la ruta estática por defecto hacia el FortiGate
+! Todo el tráfico de salida a Internet y hacia clientes VPN se envía a FG-Int (10.0.0.1)
+ip route 0.0.0.0 0.0.0.0 10.0.0.1
+
+end
+write memory

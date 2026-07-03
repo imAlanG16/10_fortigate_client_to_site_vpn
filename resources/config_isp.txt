@@ -1,0 +1,31 @@
+! ISP Router Configuration
+! Asignatura: Seguridad de Redes (TSI-203)
+! Estudiante: Alan Daniel Garcia Mendez (2025-1403)
+! Docente: Jonathan Esteban Rondon Corniel
+!
+
+enable
+configure terminal
+
+! Cambiar el nombre del dispositivo
+hostname ISP
+
+! Deshabilitar la búsqueda DNS para evitar esperas en errores de comando
+no ip domain-lookup
+
+! Configuración de la interfaz hacia el Cliente Externo (C-Externo)
+interface Ethernet0/1
+ description Enlace hacia Cliente Externo (C-Externo)
+ ip address 1.1.1.1 255.255.255.252
+ no shutdown
+exit
+
+! Configuración de la interfaz hacia el Firewall FortiGate (FG-Int)
+interface Ethernet0/0
+ description Enlace hacia Firewall FortiGate (FG-Int)
+ ip address 2.2.2.1 255.255.255.252
+ no shutdown
+exit
+
+end
+write memory
