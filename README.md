@@ -1,33 +1,3 @@
-<style>
-/* Evitar orfandad de títulos al exportar a PDF */
-h1, h2, h3, h4, h5, h6 {
-  page-break-after: avoid !important;
-  break-after: avoid !important;
-}
-
-/* Evitar que los bloques de artículos se corten entre páginas */
-.article-block {
-  display: block !important;
-  page-break-inside: avoid !important;
-  break-inside: avoid !important;
-}
-
-/* Evitar que imágenes, tablas, código, párrafos, listas y citas se dividan */
-img, table, pre, p, li, tr, blockquote, figure, div[style*="text-align: center"] {
-  page-break-inside: avoid !important;
-  break-inside: avoid !important;
-}
-
-/* Asegurar que el body no interfiera con los saltos de página en la impresión */
-@media print {
-  body {
-    max-width: none !important;
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-}
-</style>
-
 <div style="text-align: center; padding-top: 50px; font-family: 'Outfit', sans-serif;">
 
 <h1>Instituto Tecnológico de Las Américas (ITLA)</h1>
@@ -43,9 +13,6 @@ img, table, pre, p, li, tr, blockquote, figure, div[style*="text-align: center"]
 <strong>Docente:</strong> Jonathan Esteban Rondon Corniel<br>
 <strong>Fecha de Entrega:</strong> 3 de julio de 2026
 
-</div>
-</div>
-
 ## Objetivo de la VPN
 El objetivo principal de esta práctica consiste en configurar y validar una red privada virtual de acceso remoto (VPN Client-to-Site o Remote Access VPN) utilizando como puerta de enlace central un firewall FortiGate (`FG-Int`). Este diseño permite que un cliente externo posicionado en internet (`C-Externo`) establezca un túnel cifrado y seguro para acceder a los recursos internos de la red corporativa (`14.3.0.0/24`) a través del enrutador de distribución interno (`R-Int`).
 
@@ -59,7 +26,6 @@ La topología física implementada en GNS3 consta de un cliente externo, un enru
 <div style="text-align: center; margin: 10px 0;">
   <img src="images/topologia_client_to_site.png" width="600" alt="Topología de Red VPN Client-to-Site FortiGate">
   <p style="font-size: 0.9em; color: #666; font-style: italic;">Esquema físico de la topología Client-to-Site implementada</p>
-</div>
 
 El direccionamiento IP asignado a los distintos segmentos y equipos de la red se define detalladamente a continuación:
 
@@ -94,8 +60,6 @@ Los siguientes parámetros criptográficos y operativos han sido definidos para 
 ## Configuración de Dispositivos Cisco de la Topología
 Para que el tráfico fluya de manera correcta a través de la infraestructura física del laboratorio, se deben configurar los dispositivos de enrutamiento intermedio.
 
-<div class="article-block">
-
 ### 1. Router ISP (Tránsito Público)
 Este equipo simplemente actúa como un enrutador de internet. No tiene conocimientos de las redes privadas (`14.3.0.0/24` o `10.0.0.0/30`), enrutando exclusivamente entre las redes WAN conectadas directamente (`1.1.1.0/30` y `2.2.2.0/30`).
 El script de configuración completo de este dispositivo se encuentra disponible en: [config_isp.txt](resources/config_isp.txt).
@@ -113,10 +77,6 @@ ISP(config-if)# ip address 2.2.2.1 255.255.255.252
 ISP(config-if)# no shutdown
 ISP(config-if)# exit
 ```
-
-</div>
-
-<div class="article-block">
 
 ### 2. Router Interno (R-Int)
 Este enrutador interconecta la LAN con el firewall FortiGate. En este dispositivo se configura un servidor DHCP local para la red `14.3.0.0/24`, permitiendo asignar direcciones IP dinámicamente a los clientes de la LAN (excluyendo el rango administrativo del `.1` al `.9`). También requiere una ruta por defecto apuntando a la IP interna del FortiGate para dar salida a internet y permitir que el tráfico de retorno de los clientes de la VPN (pertenecientes al pool `10.14.3.0/24`) sea reenviado correctamente al firewall.
@@ -143,12 +103,8 @@ R-Int(config-if)# exit
 R-Int(config)# ip route 0.0.0.0 0.0.0.0 10.0.0.1
 ```
 
-</div>
-
 ## Configuración Detallada del Firewall FortiGate (FG-Int)
 La puerta de enlace VPN se configura en el firewall FortiGate a través de su interfaz de comandos de consola (CLI) o mediante el panel gráfico web (GUI). A continuación, se detalla el proceso paso a paso utilizando ambos métodos.
-
-<div class="article-block">
 
 ### Opción A: Configuración de SSL VPN (Recomendado)
 
@@ -275,10 +231,6 @@ config firewall policy
 end
 ```
 
-</div>
-
-<div class="article-block">
-
 ### Opción B: Configuración de IPsec VPN (Dial-Up / Acceso Remoto)
 Si se prefiere una solución basada en IPsec, la configuración correspondiente en el FortiGate se realiza mediante los siguientes comandos:
 
@@ -322,12 +274,8 @@ config firewall policy
 end
 ```
 
-</div>
-
 ## Configuración y Conexión del Cliente Externo (C-Externo)
 Para conectarse a la VPN desde el cliente externo (`C-Externo`), se detallan las instrucciones correspondientes:
-
-<div class="article-block">
 
 ### Configuración en FortiClient (Para SSL VPN)
 1. Instalar la aplicación de escritorio **FortiClient VPN**.
@@ -344,12 +292,8 @@ Para conectarse a la VPN desde el cliente externo (`C-Externo`), se detallan las
    * **Password:** `FortiClient2026`
 6. Hacer clic en **Connect** para iniciar el túnel.
 
-</div>
-
 ## Guión de Pruebas y Validación de Conectividad
 Para garantizar que la VPN Client-to-Site funciona correctamente y que el túnel enruta el tráfico como es debido, se ejecutan las siguientes pruebas de verificación en el laboratorio:
-
-<div class="article-block">
 
 ### 1. Pruebas desde el Cliente Externo (Una vez conectado a la VPN)
 * **Validación de Asignación IP:** Confirmar que la interfaz virtual del cliente haya recibido una IP del pool (`10.14.3.100 - 10.14.3.200`).
@@ -362,10 +306,6 @@ Para garantizar que la VPN Client-to-Site funciona correctamente y que el túnel
   ```bash
   tracert 14.3.0.10
   ```
-
-</div>
-
-<div class="article-block">
 
 ### 2. Comandos de Verificación en la Consola del FortiGate (CLI)
 * **Monitorear Clientes VPN Activos:**
@@ -381,4 +321,3 @@ Para garantizar que la VPN Client-to-Site funciona correctamente y que el túnel
   ```fortinet
   get router info routing-table database
   ```
-</div>
