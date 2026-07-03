@@ -41,8 +41,8 @@ img, table, pre, p, li, tr, blockquote, figure, div[style*="text-align: center"]
 <strong>Carrera:</strong> Seguridad Informática<br>
 <strong>Asignatura:</strong> Seguridad de Redes (TSI-203)<br>
 <strong>Docente:</strong> Jonathan Esteban Rondon Corniel<br>
-<strong>Fecha de Entrega:</strong> 3 de julio de 2026
-
+<strong>Fecha de Entrega:</strong> 3 de julio de 2026<br>
+<strong>Repositorio de GitHub:</strong> <a href="https://github.com/imAlanG16/10_fortigate_client_to_site_vpn">https://github.com/imAlanG16/10_fortigate_client_to_site_vpn</a>
 </div>
 </div>
 

@@ -11,7 +11,10 @@
 <strong>Carrera:</strong> Seguridad Informática<br>
 <strong>Asignatura:</strong> Seguridad de Redes (TSI-203)<br>
 <strong>Docente:</strong> Jonathan Esteban Rondon Corniel<br>
-<strong>Fecha de Entrega:</strong> 3 de julio de 2026
+<strong>Fecha de Entrega:</strong> 3 de julio de 2026<br>
+<strong>Repositorio de GitHub:</strong> <a href="https://github.com/imAlanG16/10_fortigate_client_to_site_vpn">https://github.com/imAlanG16/10_fortigate_client_to_site_vpn</a>
+</div>
+</div>
 
 ## Objetivo de la VPN
 El objetivo principal de esta práctica consiste en configurar y validar una red privada virtual de acceso remoto (VPN Client-to-Site o Remote Access VPN) utilizando como puerta de enlace central un firewall FortiGate (`FG-Int`). Este diseño permite que un cliente externo posicionado en internet (`C-Externo`) establezca un túnel cifrado y seguro para acceder a los recursos internos de la red corporativa (`14.3.0.0/24`) a través del enrutador de distribución interno (`R-Int`).
@@ -26,6 +29,7 @@ La topología física implementada en GNS3 consta de un cliente externo, un enru
 <div style="text-align: center; margin: 10px 0;">
   <img src="images/topologia_client_to_site.png" width="600" alt="Topología de Red VPN Client-to-Site FortiGate">
   <p style="font-size: 0.9em; color: #666; font-style: italic;">Esquema físico de la topología Client-to-Site implementada</p>
+</div>
 
 El direccionamiento IP asignado a los distintos segmentos y equipos de la red se define detalladamente a continuación:
 
@@ -78,6 +82,8 @@ ISP(config-if)# no shutdown
 ISP(config-if)# exit
 ```
 
+</div>
+
 ### 2. Router Interno (R-Int)
 Este enrutador interconecta la LAN con el firewall FortiGate. En este dispositivo se configura un servidor DHCP local para la red `14.3.0.0/24`, permitiendo asignar direcciones IP dinámicamente a los clientes de la LAN (excluyendo el rango administrativo del `.1` al `.9`). También requiere una ruta por defecto apuntando a la IP interna del FortiGate para dar salida a internet y permitir que el tráfico de retorno de los clientes de la VPN (pertenecientes al pool `10.14.3.0/24`) sea reenviado correctamente al firewall.
 El script de configuración completo de este dispositivo se encuentra disponible en: [config_r_int.txt](resources/config_r_int.txt).
@@ -102,6 +108,8 @@ R-Int(config-if)# no shutdown
 R-Int(config-if)# exit
 R-Int(config)# ip route 0.0.0.0 0.0.0.0 10.0.0.1
 ```
+
+</div>
 
 ## Configuración Detallada del Firewall FortiGate (FG-Int)
 La puerta de enlace VPN se configura en el firewall FortiGate a través de su interfaz de comandos de consola (CLI) o mediante el panel gráfico web (GUI). A continuación, se detalla el proceso paso a paso utilizando ambos métodos.
@@ -231,6 +239,8 @@ config firewall policy
 end
 ```
 
+</div>
+
 ### Opción B: Configuración de IPsec VPN (Dial-Up / Acceso Remoto)
 Si se prefiere una solución basada en IPsec, la configuración correspondiente en el FortiGate se realiza mediante los siguientes comandos:
 
@@ -274,6 +284,8 @@ config firewall policy
 end
 ```
 
+</div>
+
 ## Configuración y Conexión del Cliente Externo (C-Externo)
 Para conectarse a la VPN desde el cliente externo (`C-Externo`), se detallan las instrucciones correspondientes:
 
@@ -292,6 +304,8 @@ Para conectarse a la VPN desde el cliente externo (`C-Externo`), se detallan las
    * **Password:** `FortiClient2026`
 6. Hacer clic en **Connect** para iniciar el túnel.
 
+</div>
+
 ## Guión de Pruebas y Validación de Conectividad
 Para garantizar que la VPN Client-to-Site funciona correctamente y que el túnel enruta el tráfico como es debido, se ejecutan las siguientes pruebas de verificación en el laboratorio:
 
@@ -307,6 +321,8 @@ Para garantizar que la VPN Client-to-Site funciona correctamente y que el túnel
   tracert 14.3.0.10
   ```
 
+</div>
+
 ### 2. Comandos de Verificación en la Consola del FortiGate (CLI)
 * **Monitorear Clientes VPN Activos:**
   ```fortinet
@@ -321,3 +337,4 @@ Para garantizar que la VPN Client-to-Site funciona correctamente y que el túnel
   ```fortinet
   get router info routing-table database
   ```
+</div>
